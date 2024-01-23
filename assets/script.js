@@ -5,6 +5,7 @@ $(document).ready(function () {
     dayjs.extend(window.dayjs_plugin_advancedFormat)
 
     $("#currentDay").text(dayjs().format('dddd, MMMM Do'));
+
     function generateTimeBlocks() {
         var currentHour = dayjs().hour();
         var container = $(".container");
@@ -22,13 +23,6 @@ $(document).ready(function () {
             // Allow a user to enter an event when they click a timeblock
             var textArea = $("<textarea>").addClass("col-md-10 description");
 
-            // console.log(timeBlock)
-            // console.log(hourCol)
-            // console.log(textArea)
-
-            // timeBlock.append(hourCol, textArea, saveBtn);
-            // container.append(timeBlock);
-
             // Color - code each timeblock based on past, present, and future when the timeblock is viewed.
             if (hour >= 9 && hour <= 18) {
                 if (hour < currentHour) {
@@ -44,7 +38,16 @@ $(document).ready(function () {
 
             var saveBtn = $("<button>").addClass("col-md-1 saveBtn").html("<i class='fas fa-save'></i>");
 
-            // Save the event in local storage when the save button is clicked in that timeblock.
+            timeBlock.append(hourCol, textArea, saveBtn);
+            container.append(timeBlock);
+
+            //Load event from local storage
+            var key = dayjs().format("DD-MM-YYYY") + "_" + hour;
+            var savedEvent = localStorage.getItem(key);
+            if (savedEvent) {
+                textArea.val(savedEvent);
+                // console.log(savedEvent)
+            }
 
             saveBtn.on('click', function () {
                 var eventText = $(this).siblings(".description").val();
@@ -52,23 +55,19 @@ $(document).ready(function () {
                 //     console.log(eventText)
                 //     console.log(eventHour)
 
-                localStorage.setItem("event_" + dayjs().format("DD-MM-YYYY HH:mm:ss"), eventText);
+                // Save the event in local storage when the save button is clicked in that timeblock.
+                var key = dayjs().format("DD-MM-YYYY") + "_" + hour;
+                localStorage.setItem(key, eventText);
 
-                //Load event from local storage
-                var savedEvent = localStorage.getItem("event_" + hour);
-                if (savedEvent) {
-                    var timeBlock = $("#timeblock_" + hour);
-                    timeBlock.find(".description").val(savedEvent);
-                }
+
 
             });
-            timeBlock.append(hourCol, textArea, saveBtn);
-            container.append(timeBlock);
+
         }
     }
 
     generateTimeBlocks();
-    // Persist events between refreshes of a page
+
 });
 
 
