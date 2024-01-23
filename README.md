@@ -34,7 +34,7 @@ No installation is required. Simply click on the Deployed application - https://
 
 ## Screenshots
 
-Screenshot 2024-01-23 at 18.12.39.png
+![image](https://github.com/Avr99j/workDayScheduler/assets/71075582/92d80ff7-9aee-435b-b9e2-01db391d9511)
 
 ## Contributing
 
